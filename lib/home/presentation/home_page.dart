@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_perfect/home/presentation/bloc/home_bloc.dart';
 import 'package:pet_perfect/home/repositories/pet_repository.dart';
 import 'package:pet_perfect/posts/presentation/posts_page.dart';
+import 'package:video_player/video_player.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -34,17 +35,30 @@ class HomePageView extends StatelessWidget {
               return const CircularProgressIndicator();
             } else if (state is PetException) {
               return Text(state.failure.message);
-            } else if (state is PetLoaded) {
+            } else if (state is PetLoaded || state is PetVideoLoaded) {
               return Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 height: MediaQuery.of(context).size.height * 0.5,
                 width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: NetworkImage(state.pet.imageUrl),
-                  ),
-                ),
+                decoration: (state is PetLoaded)
+                    ? BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(state.pet.imageUrl),
+                        ),
+                      )
+                    : null,
+                child: (state is PetVideoLoaded)
+                    ? AspectRatio(
+                        aspectRatio: state.controller.value.aspectRatio,
+                        child: VideoPlayer(state.controller),
+                      )
+                    : null,
+              );
+            } else if (state is PetVideoLoaded) {
+              return AspectRatio(
+                aspectRatio: state.controller.value.aspectRatio,
+                child: VideoPlayer(state.controller),
               );
             } else {
               return const SizedBox.shrink();
@@ -54,7 +68,7 @@ class HomePageView extends StatelessWidget {
       ),
       floatingActionButton: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          return (state is PetLoaded)
+          return (state is PetLoaded || state is PetVideoLoaded)
               ? FloatingActionButton(
                   onPressed: () {
                     Navigator.push(context, PostsPage.route);

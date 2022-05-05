@@ -14,6 +14,16 @@ class PetLoaded extends HomeState {
   const PetLoaded({required this.pet});
 }
 
+class PetVideoLoaded extends HomeState {
+  final Pet pet;
+  final VideoPlayerController controller;
+
+  const PetVideoLoaded({
+    required this.pet,
+    required this.controller,
+  });
+}
+
 class PetException extends HomeState {
   final Failure failure;
   const PetException({required this.failure});
