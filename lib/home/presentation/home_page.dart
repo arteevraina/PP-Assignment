@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_perfect/home/presentation/bloc/home_bloc.dart';
 import 'package:pet_perfect/home/repositories/pet_repository.dart';
+import 'package:pet_perfect/posts/presentation/posts_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -55,7 +56,9 @@ class HomePageView extends StatelessWidget {
         builder: (context, state) {
           return (state is PetLoaded)
               ? FloatingActionButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, PostsPage.route);
+                  },
                   child: const Icon(Icons.download),
                 )
               : const SizedBox.shrink();

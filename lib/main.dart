@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_perfect/home/presentation/home_page.dart';
 import 'package:pet_perfect/home/repositories/pet_repository.dart';
 
+import 'posts/repositories/posts_repository.dart';
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -11,11 +13,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pet Perfect',
-      home: RepositoryProvider(
-        create: (context) => PetRepositoryAPI(dioClient: Dio()),
-        child: const HomePage(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<PetRepositoryAPI>(
+          create: (context) => PetRepositoryAPI(dioClient: Dio()),
+        ),
+        RepositoryProvider<PostsRepositoryAPI>(
+          create: (context) => PostsRepositoryAPI(dioClient: Dio()),
+        ),
+      ],
+      child: const MaterialApp(
+        title: 'Pet Perfect',
+        home: HomePage(),
       ),
     );
   }

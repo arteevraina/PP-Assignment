@@ -6,10 +6,10 @@ abstract class PostsRepository {
   Future<List<Post>> getPosts();
 }
 
-class PostRepositoryAPI implements PostsRepository {
+class PostsRepositoryAPI implements PostsRepository {
   final Dio dioClient;
 
-  PostRepositoryAPI({required this.dioClient});
+  PostsRepositoryAPI({required this.dioClient});
 
   @override
   Future<List<Post>> getPosts() async {
