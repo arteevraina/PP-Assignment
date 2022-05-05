@@ -24,6 +24,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         final controller = VideoPlayerController.network(pet.imageUrl);
         await controller.initialize();
         await controller.play();
+        await controller.setLooping(true);
 
         emit(PetVideoLoaded(pet: pet, controller: controller));
       } else {
