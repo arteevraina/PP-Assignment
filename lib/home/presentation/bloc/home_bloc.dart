@@ -19,6 +19,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _onFetchPetEvent(FetchPetEvent event, Emitter<HomeState> emit) async {
+    emit(PetLoading());
     try {
       final pet = await petRepository.getPet();
       log(pet.imageUrl);

@@ -15,6 +15,7 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
   }
 
   void _onFetchPostsEvent(PostsEvent event, Emitter<PostsState> emit) async {
+    emit(FetchingPosts());
     try {
       final posts = await postsRepository.getPosts();
       emit(PostsLoaded(posts: posts));
