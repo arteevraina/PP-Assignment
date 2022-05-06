@@ -30,7 +30,16 @@ class HomePageView extends StatelessWidget {
         title: const Text('Pet Perfect Assignment'),
       ),
       body: Center(
-        child: BlocBuilder<HomeBloc, HomeState>(
+        child: BlocConsumer<HomeBloc, HomeState>(
+          listener: (context, state) {
+            if (state is PetSaved) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Saved pet!'),
+                ),
+              );
+            }
+          },
           builder: (context, state) {
             if (state is PetLoading) {
               return const CircularProgressIndicator();

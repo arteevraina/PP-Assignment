@@ -38,6 +38,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _onSavePetEvent(SavePetEvent event, Emitter<HomeState> emit) async {
-    await petRepository.saveImageToLocalDatabase(event.pet);
+    await petRepository
+        .saveImageToLocalDatabase(Pet(imageUrl: event.pet.imageUrl));
+    emit(PetSaved());
+    emit(PetLoaded(pet: event.pet));
   }
 }

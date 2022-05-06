@@ -19,3 +19,5 @@ class PetException extends HomeState {
   final Failure failure;
   const PetException({required this.failure});
 }
+
+class PetSaved extends HomeState {}
