@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pet_perfect/posts/presentation/bloc/posts_bloc.dart';
-import 'package:pet_perfect/posts/repositories/posts_repository.dart';
+
+import '/posts/presentation/bloc/posts_bloc.dart';
+import '/posts/repositories/posts_repository.dart';
 
 class PostsPage extends StatelessWidget {
   const PostsPage({Key? key}) : super(key: key);

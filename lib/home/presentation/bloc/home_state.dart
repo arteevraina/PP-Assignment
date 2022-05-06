@@ -9,19 +9,10 @@ abstract class HomeState extends Equatable {
 
 class PetLoading extends HomeState {}
 
-class PetImageLoaded extends HomeState {
+class PetLoaded extends HomeState {
   final Pet pet;
-  const PetImageLoaded({required this.pet});
-}
-
-class PetVideoLoaded extends HomeState {
-  final Pet pet;
-  final VideoPlayerController controller;
-
-  const PetVideoLoaded({
-    required this.pet,
-    required this.controller,
-  });
+  final VideoPlayerController? controller;
+  const PetLoaded({required this.pet, this.controller});
 }
 
 class PetException extends HomeState {

@@ -8,3 +8,8 @@ abstract class HomeEvent extends Equatable {
 }
 
 class FetchPetEvent extends HomeEvent {}
+
+class SavePetEvent extends HomeEvent {
+  final Pet pet;
+  const SavePetEvent({required this.pet});
+}

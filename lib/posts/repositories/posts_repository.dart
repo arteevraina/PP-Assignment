@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:pet_perfect/core/failure.dart';
-import 'package:pet_perfect/posts/data/post.dart';
+
+import '/core/failure.dart';
+import '/posts/data/post.dart';
 
 abstract class PostsRepository {
   Future<List<Post>> getPosts();

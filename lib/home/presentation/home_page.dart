@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pet_perfect/home/presentation/bloc/home_bloc.dart';
-import 'package:pet_perfect/home/repositories/pet_repository.dart';
-import 'package:pet_perfect/posts/presentation/posts_page.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '/home/presentation/bloc/home_bloc.dart';
+import '/home/repositories/pet_repository.dart';
+import '/posts/presentation/posts_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -35,12 +36,12 @@ class HomePageView extends StatelessWidget {
               return const CircularProgressIndicator();
             } else if (state is PetException) {
               return Text(state.failure.message);
-            } else if (state is PetImageLoaded || state is PetVideoLoaded) {
+            } else if (state is PetLoaded) {
               return Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 height: MediaQuery.of(context).size.height * 0.5,
                 width: MediaQuery.of(context).size.width,
-                decoration: (state is PetImageLoaded)
+                decoration: (state.controller == null)
                     ? BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.cover,
@@ -48,17 +49,12 @@ class HomePageView extends StatelessWidget {
                         ),
                       )
                     : null,
-                child: (state is PetVideoLoaded)
+                child: (state.controller != null)
                     ? AspectRatio(
-                        aspectRatio: state.controller.value.aspectRatio,
-                        child: VideoPlayer(state.controller),
+                        aspectRatio: state.controller!.value.aspectRatio,
+                        child: VideoPlayer(state.controller!),
                       )
                     : null,
-              );
-            } else if (state is PetVideoLoaded) {
-              return AspectRatio(
-                aspectRatio: state.controller.value.aspectRatio,
-                child: VideoPlayer(state.controller),
               );
             } else {
               return const SizedBox.shrink();
@@ -68,9 +64,14 @@ class HomePageView extends StatelessWidget {
       ),
       floatingActionButton: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          return (state is PetImageLoaded || state is PetVideoLoaded)
+          return (state is PetLoaded)
               ? FloatingActionButton(
                   onPressed: () {
+                    context.read<HomeBloc>().add(
+                          SavePetEvent(
+                            pet: state.pet,
+                          ),
+                        );
                     Navigator.push(context, PostsPage.route);
                   },
                   child: const Icon(Icons.download),

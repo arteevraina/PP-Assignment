@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:pet_perfect/core/failure.dart';
-import 'package:pet_perfect/posts/data/post.dart';
-import 'package:pet_perfect/posts/repositories/posts_repository.dart';
+
+import '/core/failure.dart';
+import '/posts/data/post.dart';
+import '/posts/repositories/posts_repository.dart';
 
 part 'posts_event.dart';
 part 'posts_state.dart';
