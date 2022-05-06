@@ -35,12 +35,12 @@ class HomePageView extends StatelessWidget {
               return const CircularProgressIndicator();
             } else if (state is PetException) {
               return Text(state.failure.message);
-            } else if (state is PetLoaded || state is PetVideoLoaded) {
+            } else if (state is PetImageLoaded || state is PetVideoLoaded) {
               return Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 height: MediaQuery.of(context).size.height * 0.5,
                 width: MediaQuery.of(context).size.width,
-                decoration: (state is PetLoaded)
+                decoration: (state is PetImageLoaded)
                     ? BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.cover,
@@ -68,7 +68,7 @@ class HomePageView extends StatelessWidget {
       ),
       floatingActionButton: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          return (state is PetLoaded || state is PetVideoLoaded)
+          return (state is PetImageLoaded || state is PetVideoLoaded)
               ? FloatingActionButton(
                   onPressed: () {
                     Navigator.push(context, PostsPage.route);

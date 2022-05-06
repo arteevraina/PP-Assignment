@@ -28,7 +28,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
         emit(PetVideoLoaded(pet: pet, controller: controller));
       } else {
-        emit(PetLoaded(pet: pet));
+        emit(PetImageLoaded(pet: pet));
       }
     } on Failure catch (error) {
       emit(PetException(failure: error));
