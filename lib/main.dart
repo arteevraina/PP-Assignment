@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pet_perfect/home/presentation/home_page.dart';
-import 'package:pet_perfect/home/repositories/pet_repository.dart';
 
+import '/home/presentation/home_page.dart';
+import '/home/repositories/pet_repository.dart';
 import 'home/data/pet.dart';
 import 'posts/repositories/posts_repository.dart';
 
@@ -17,21 +17,24 @@ void main() async {
   Hive
     ..init(directory.path)
     ..registerAdapter(PetAdapter());
-  runApp(const MyApp());
+  final dioClient = Dio();
+  await Hive.openBox<Pet>("Pet");
+  runApp(MyApp(dioClient: dioClient));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key, required this.dioClient}) : super(key: key);
 
+  final Dio dioClient;
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<PetRepositoryAPI>(
-          create: (context) => PetRepositoryAPI(dioClient: Dio()),
+          create: (context) => PetRepositoryAPI(dioClient: dioClient),
         ),
         RepositoryProvider<PostsRepositoryAPI>(
-          create: (context) => PostsRepositoryAPI(dioClient: Dio()),
+          create: (context) => PostsRepositoryAPI(dioClient: dioClient),
         ),
       ],
       child: const MaterialApp(

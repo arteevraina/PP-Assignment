@@ -28,7 +28,7 @@ class PetRepositoryAPI implements PetRepository {
 
   @override
   Future<void> saveImageToLocalDatabase(Pet pet) async {
-    var box = await Hive.openBox<Pet>(name);
-    await box.add(pet);
+    final hiveBox = Hive.box<Pet>('Pet');
+    await hiveBox.add(pet);
   }
 }
