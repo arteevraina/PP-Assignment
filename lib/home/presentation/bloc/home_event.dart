@@ -11,5 +11,6 @@ class FetchPetEvent extends HomeEvent {}
 
 class SavePetEvent extends HomeEvent {
   final Pet pet;
-  const SavePetEvent({required this.pet});
+  final VideoPlayerController? controller;
+  const SavePetEvent({required this.pet, this.controller});
 }

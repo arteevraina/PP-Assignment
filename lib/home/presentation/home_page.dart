@@ -50,20 +50,12 @@ class HomePageView extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 height: MediaQuery.of(context).size.height * 0.5,
                 width: MediaQuery.of(context).size.width,
-                decoration: (state.controller == null)
-                    ? BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(state.pet.imageUrl),
-                        ),
-                      )
-                    : null,
                 child: (state.controller != null)
                     ? AspectRatio(
                         aspectRatio: state.controller!.value.aspectRatio,
                         child: VideoPlayer(state.controller!),
                       )
-                    : null,
+                    : Image.network(state.pet.imageUrl, fit: BoxFit.cover),
               );
             } else {
               return const SizedBox.shrink();
@@ -76,12 +68,7 @@ class HomePageView extends StatelessWidget {
           return (state is PetLoaded)
               ? FloatingActionButton(
                   onPressed: () {
-                    context.read<HomeBloc>().add(
-                          SavePetEvent(
-                            pet: state.pet,
-                          ),
-                        );
-                    Navigator.push(context, PostsPage.route);
+                    handleClick(context, state);
                   },
                   child: const Icon(Icons.download),
                 )
@@ -89,5 +76,27 @@ class HomePageView extends StatelessWidget {
         },
       ),
     );
+  }
+
+  void handleClick(BuildContext context, PetLoaded state) {
+    context.read<HomeBloc>().add(
+          SavePetEvent(
+            pet: state.pet,
+            controller: state.controller,
+          ),
+        );
+
+    // Pause if the current item is a video before Navigation.
+    if (state.controller != null) {
+      state.controller!.pause();
+    }
+
+    // Navigate to new screen and when the Future completes, resume the video if
+    // it is a video.
+    Navigator.push(context, PostsPage.route).then((value) {
+      if (state.controller != null) {
+        state.controller!.play();
+      }
+    });
   }
 }

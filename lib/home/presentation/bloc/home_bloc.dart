@@ -41,6 +41,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     await petRepository
         .saveImageToLocalDatabase(Pet(imageUrl: event.pet.imageUrl));
     emit(PetSaved());
-    emit(PetLoaded(pet: event.pet));
+    emit(PetLoaded(pet: event.pet, controller: event.controller));
   }
 }
