@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:video_player/video_player.dart';
@@ -18,11 +16,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<SavePetEvent>(_onSavePetEvent);
   }
 
+  /// Bloc level function to fetch pet from repository.
+  /// This function is called when [FetchPetEvent] is added to the bloc.
+  /// It emits [PetLoading] and [PetLoaded] state.
+  /// If there is an error, it emits [PetException] state.
   void _onFetchPetEvent(FetchPetEvent event, Emitter<HomeState> emit) async {
     emit(PetLoading());
     try {
       final pet = await petRepository.getPet();
-      log(pet.imageUrl);
       if (pet.imageUrl.contains('mp4')) {
         final controller = VideoPlayerController.network(pet.imageUrl);
         await controller.initialize();
@@ -38,6 +39,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
   }
 
+  /// Bloc level function to save pet to repository.
+  /// This function is called when [SavePetEvent] is added to the bloc.
+  /// It emits [PetSaved] and [PetLoaded] state.
   void _onSavePetEvent(SavePetEvent event, Emitter<HomeState> emit) async {
     await petRepository
         .saveImageToLocalDatabase(Pet(imageUrl: event.pet.imageUrl));

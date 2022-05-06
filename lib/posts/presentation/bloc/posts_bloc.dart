@@ -14,6 +14,10 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
     on<FetchPostsEvent>(_onFetchPostsEvent);
   }
 
+  /// Bloc level function to fetch posts from repository.
+  /// This function is called when [FetchPostsEvent] is added to the bloc.
+  /// It emits [FetchingPosts] and [PostsLoaded] state.
+  /// If there is an error, it emits [PostsException] state.
   void _onFetchPostsEvent(PostsEvent event, Emitter<PostsState> emit) async {
     emit(FetchingPosts());
     try {

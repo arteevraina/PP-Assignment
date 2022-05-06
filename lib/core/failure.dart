@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+/// A class for managing the exceptions thrown by the [Dio] library.
 class Failure implements Exception {
   String message = "";
 
