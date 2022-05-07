@@ -7,7 +7,7 @@ import '/home/data/pet.dart';
 /// Abstract Repository to handle data layer operations related to Pet.
 abstract class PetRepository {
   Future<Pet> getPet();
-  Future<void> saveImageToLocalDatabase(Pet pet);
+  void saveImageToLocalDatabase(Pet pet);
 }
 
 /// Implementation of [PetRepository] to handle data layer operations related to Pet.
@@ -33,7 +33,7 @@ class PetRepositoryAPI implements PetRepository {
 
   /// Saves pet to local database.
   @override
-  Future<void> saveImageToLocalDatabase(Pet pet) async {
+  void saveImageToLocalDatabase(Pet pet) async {
     final hiveBox = Hive.box<Pet>('Pet');
     await hiveBox.add(pet);
   }

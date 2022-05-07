@@ -42,9 +42,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   /// Bloc level function to save pet to repository.
   /// This function is called when [SavePetEvent] is added to the bloc.
   /// It emits [PetSaved] and [PetLoaded] state.
-  void _onSavePetEvent(SavePetEvent event, Emitter<HomeState> emit) async {
-    await petRepository
-        .saveImageToLocalDatabase(Pet(imageUrl: event.pet.imageUrl));
+  void _onSavePetEvent(SavePetEvent event, Emitter<HomeState> emit) {
+    petRepository.saveImageToLocalDatabase(Pet(imageUrl: event.pet.imageUrl));
     emit(PetSaved());
     emit(PetLoaded(pet: event.pet, controller: event.controller));
   }

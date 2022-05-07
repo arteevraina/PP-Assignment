@@ -10,12 +10,8 @@ class MockPetRepository extends Mock implements PetRepository {}
 void main() {
   late MockPetRepository mockPetRepository;
 
-  /// [sut] stand for System Under Test.
-  late HomeBloc sut;
-
   setUpAll(() {
     mockPetRepository = MockPetRepository();
-    sut = HomeBloc(petRepository: mockPetRepository);
   });
 
   group('Home Bloc Tests', () {
@@ -27,11 +23,24 @@ void main() {
         when(() => mockPetRepository.getPet())
             .thenAnswer((_) async => petFromRepository);
 
-        return sut;
+        return HomeBloc(petRepository: mockPetRepository);
       },
       act: (bloc) => bloc.add(FetchPetEvent()),
       wait: const Duration(milliseconds: 500),
       expect: () => [PetLoading(), PetLoaded(pet: petFromRepository)],
+    );
+
+    blocTest<HomeBloc, HomeState>(
+      'should emit [PetSaved], [PetLoaded] when [SavePetEvent] is added',
+      build: () {
+        when(() =>
+                mockPetRepository.saveImageToLocalDatabase(petFromRepository))
+            .thenAnswer((_) => Future.value());
+        return HomeBloc(petRepository: mockPetRepository);
+      },
+      act: (bloc) => bloc.add(SavePetEvent(pet: petFromRepository)),
+      wait: const Duration(milliseconds: 500),
+      expect: () => [PetSaved(), PetLoaded(pet: petFromRepository)],
     );
   });
 }
